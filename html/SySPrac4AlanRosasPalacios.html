@@ -1,0 +1,373 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>P04: Convoluci&oacute;n y correlaci&oacute;n</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-01"><meta name="DC.source" content="SySPrac4AlanRosasPalacios.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>P04: Convoluci&oacute;n y correlaci&oacute;n</h1><!--introduction--><div><ul><li>Enriquez Melendez Jesus</li><li>Rosas Palacios Alan</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Objetivos</a></li><li><a href="#2">Introducci&oacute;n</a></li><li><a href="#3">Metodos numericos de integraci&oacute;n</a></li><li><a href="#4">Formulas cerradas de Newton-Cotes</a></li><li><a href="#5">Regla del trapecio (n=1)</a></li><li><a href="#6">Regla de Simpson (n=2)</a></li><li><a href="#7">Regla de tres octavos de Simpson (n=3)</a></li><li><a href="#8">Formulas de Newton-Cotes compuestas</a></li><li><a href="#9">Regla compuesta del trapecio</a></li><li><a href="#10">Regla compuesta de Simpson</a></li><li><a href="#11">Cuadratura gaussiana</a></li><li><a href="#13">Convoluciones</a></li><li><a href="#14">PR04 Problema 1</a></li><li><a href="#16">PR04 Problema 3</a></li><li><a href="#18">Correlaciones</a></li><li><a href="#19">PR06 Problema e</a></li><li><a href="#21">PR06 Problema f</a></li><li><a href="#23">Referencias</a></li></ul></div><h2 id="1">Objetivos</h2><div><ul><li>Conocer m&eacute;todos b&aacute;sicos de integraci&oacute;n num&eacute;rica</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Simular convoluciones y correlaciones de se&ntilde;ales continuas</li></ul></div><h2 id="2">Introducci&oacute;n</h2><p>Al momento de aplicar las Matem&aacute;ticas a situaciones del mundo real nos encontramos a menudo con problemas que no pueden ser resueltos anal&iacute;ticamente o de manera exacta y cuya soluci&oacute;n debe ser abordada con ayuda de alg&uacute;n procedimiento num&eacute;rico.</p><p><b>&iquest;Qu&eacute; es un m&eacute;todo num&eacute;rico?</b></p><p>Un m&eacute;todo num&eacute;rico es un procedimiento mediante el cual se obtiene, casi siempre de manera aproximada, la soluci&oacute;n de ciertos problemas realizando c&aacute;lculos puramente aritm&eacute;ticos y l&oacute;gicos (operaciones aritm&eacute;ticas elementales, c&aacute;lculo de funciones, consulta de una tabla de valores, c&aacute;lculo preposicional, etc.). Un tal procedimiento consiste de una lista finita de instrucciones precisas que especifican una secuencia de operaciones algebraicas y l&oacute;gicas (algoritmo), que producen o bien una aproximaci&oacute;n de la soluci&oacute;n del problema (soluci&oacute;n num&eacute;rica) o bien un mensaje. La eficiencia en el c&aacute;lculo de dicha aproximaci&oacute;n depende, en parte, de la facilidad de implementaci&oacute;n del algoritmo y de las caracter&iacute;sticas especiales y limitaciones de los instrumentos de c&aacute;lculo (los computadores). En general, al emplear estos instrumentos de c&aacute;lculo se introducen errores llamados de redondeo.</p><h2 id="3">Metodos numericos de integraci&oacute;n</h2><p>En los cursos de C&aacute;lculo Integral aprendemos a calcular una integral definida de una funci&oacute;n continua haciendo uso del Teorema Fundamental del C&aacute;lculo que dice que si f(x) es una funci&oacute;n continua en un intervalo [a, b] y F(x) es una antiderivada de f(x) entonces:</p><p><img vspace="5" hspace="5" src="a.png" alt=""> </p><p>El problema en la pr&aacute;ctica se presenta, cuando se nos hace imposible mediante m&eacute;todos anal&iacute;ticos determinar la antiderivada requerida, aun cuando se trate de integrales aparentemente sencillas, que son imposibles de resolver con el Teorema Fundamental del C&aacute;lculo. En estos casos, debemos de recurrir a la integraci&oacute;n num&eacute;rica que permite obtener aproximaciones bastantes exactas.</p><p><b>Ejemplo</b></p><p><img vspace="5" hspace="5" src="B3.PNG" alt=""> </p><p>Podemos observar que para esta integral no existe una soluci&oacute;n utilizando el teorema fundamental del calculo, por lo que debemos ocupar metodos numericos.</p><p>Para resolver este problema podemos delimitar el area de la funci&oacute;n con un polinomio y posteriormente integrarlo para llegar a una aproximaci&oacute;n del area. En este caso usaremos un polinomio constante.</p><p><img vspace="5" hspace="5" src="AA1.PNG" alt=""> </p><p>De aqui se puede deducir que</p><p><img vspace="5" hspace="5" src="AA2.PNG" alt=""> </p><p>Comparandolo con un resultado mas aproximado de la integral</p><p><img vspace="5" hspace="5" src="AA3.PNG" alt=""> </p><p>Podemos observar que llegamos a una concluci&oacute;n valida.</p><h2 id="4">Formulas cerradas de Newton-Cotes</h2><p>Se utilizan para hallar un valor aproximado de integrales. La integral:</p><p><img vspace="5" hspace="5" src="d.png" alt=""> </p><p>Donde f es una funcion derivable un numero determinado de veces, donde su derivada es continua. Entonces por la teoria de Lagrange podemos encontrar que la funci&oacute;n es igual a un polinomio de grado n que va a coincidir con la funci&oacute;n en determinados puntos mas un termino de error.</p><p><img vspace="5" hspace="5" src="AA.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="A3.PNG" alt=""> </p><p>En lugar de integrar f(x) integraremos el polinomio P(x) mas el factor de error. Para esto utilizaremos diferentes formulas de Newton-Cotes</p><p><b>F&oacute;rmula cerrada de (n+1) puntos de Newton-Cotes</b></p><p><img vspace="5" hspace="5" src="A4.PNG" alt=""> </p><h2 id="5">Regla del trapecio (n=1)</h2><p>Llamada asi debido a que define el are&aacute; de un trapecio, al interpolar dos puntos.</p><p><img vspace="5" hspace="5" src="A5.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="A6.PNG" alt=""> </p><p>de las formulas se puede interpretar que cuando el polinomio es de grado uno, el error es cero, debido a que este depende la segunda derivada de la funci&oacute;n.</p><p><b>Ejemplo</b></p><p><img vspace="5" hspace="5" src="A7.PNG" alt=""> </p><p>aqui podemos obserivar una aproximaci&oacute;n al resultado de esta integral, sin embargo no es muy buena.</p><h2 id="6">Regla de Simpson (n=2)</h2><p>Ahora si queremos interpolar tres puntos utlizaremos la regla de Simpson</p><p><img vspace="5" hspace="5" src="A8.PNG" alt=""> </p><p>Donde,</p><p><img vspace="5" hspace="5" src="B1.PNG" alt=""> </p><p>Ahora el termino de error dependera de la cuerta derivada y el valor de h.</p><p><b>Ejemplo</b></p><p><img vspace="5" hspace="5" src="A9.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="B2.PNG" alt=""> </p><p>Esta aproximacion con un polinomio de grado dos es un poco mejor a la de grado uno debido a su cercania con el valor de la integral.</p><h2 id="7">Regla de tres octavos de Simpson (n=3)</h2><p>Continuando de esta manera ahora tenemos</p><p><img vspace="5" hspace="5" src="B4.PNG" alt=""> </p><p>Donde,</p><p><img vspace="5" hspace="5" src="B5.PNG" alt=""> </p><p><b>Ejemplo</b></p><p><img vspace="5" hspace="5" src="B6.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="B7.PNG" alt=""> </p><p>Podemos observar que este resultado da una mejor aproximacion al valor de la integral, de lo cual deducimos que conforme vayamos aumentando el grado del polinomio a evaluar, mejor sera la aproximaci&oacute;n.</p><h2 id="8">Formulas de Newton-Cotes compuestas</h2><h2 id="9">Regla compuesta del trapecio</h2><p>Al realizar la regla del trapecon en diferentes intervalos resulta que, los extremos solamente formaran parte de un trapecio a la vez, pero los puntos intermedios formaran parte de dos trapecios.</p><p>Por lo cual los extremos se evaluaran una vez y los puntos intermedios se evaluaran dos veces.</p><p><img vspace="5" hspace="5" src="C1.PNG" alt=""> </p><p>Donde,</p><p><img vspace="5" hspace="5" src="C2.PNG" alt=""> </p><p><b>Ejemplo</b></p><p>Para este ejemplo se tomaron 10 intervalos</p><p><img vspace="5" hspace="5" src="C3.PNG" alt=""> </p><p>Sustituyendo terminos tenemos que,</p><p><img vspace="5" hspace="5" src="C4.PNG" alt=""> </p><p>Aqui podemos notar una mejor aproximacion para el resultado de la integral</p><h2 id="10">Regla compuesta de Simpson</h2><p><img vspace="5" hspace="5" src="C5.PNG" alt=""> </p><p>Donde,</p><p><img vspace="5" hspace="5" src="C6.PNG" alt=""> </p><p><b>Ejemplo</b></p><p>Para este ejemplo se tomaron 10 intervalos</p><p><img vspace="5" hspace="5" src="C7.PNG" alt=""> </p><p>Sustituyendo terminos tenemos que,</p><p><img vspace="5" hspace="5" src="D2.PNG" alt=""> </p><p>Por lo tanto,</p><p><img vspace="5" hspace="5" src="D1.PNG" alt=""> </p><p>Por ultimo, podemos notar que el resultado es casi el resultado esperado solo siendo diferente por decimas.</p><h2 id="11">Cuadratura gaussiana</h2><p>Para este metodo se usan Polinomios de Legendre a diferencia de los anteriores donde se utilizaban polinomios de Lagrange</p><pre class="codeinput">polinomios()
+</pre><img vspace="5" hspace="5" src="SySPrac4AlanRosasPalacios_01.png" alt=""> <p><img vspace="5" hspace="5" src="E3.png" alt=""> </p><p>Tenemos</p><p><img vspace="5" hspace="5" src="D3.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="D4.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="E4.PNG" alt=""> </p><p>Esta integral es valida para regiones entre -1 y 1 sin embargo si queremos usar otros intervalos de integraci&oacute;n tenemos:</p><p><img vspace="5" hspace="5" src="D5.PNG" alt=""> </p><p><b>Ejemplo</b></p><p><img vspace="5" hspace="5" src="D7.PNG" alt=""> </p><p>Esta es otra manera de encontrar los valores de las integrales por metodos numericos y podemos observar que el resultado es muy aproximado al esperado.</p><h2 id="13">Convoluciones</h2><h2 id="14">PR04 Problema 1</h2><pre class="codeinput">x = @(t)((1-t).*((t&gt;=0) &amp; (t&lt;1)))+((t-1).*((t&gt;=1) &amp; (t&lt;2)));
+h = @(t)(1.*((t&gt;=0) &amp; (t&lt;1)));
+Convolucion(x,h)
+</pre><img vspace="5" hspace="5" src="SySPrac4AlanRosasPalacios_02.png" alt=""> <p><img vspace="5" hspace="5" src="primera.png" alt=""> </p><p><img vspace="5" hspace="5" src="Convolucion1.gif" alt=""> </p><h2 id="16">PR04 Problema 3</h2><pre class="codeinput">x=@(t) (t.*((t&gt;=0) &amp; (t&lt;1))+1.*((t&gt;=1) &amp; (t&lt;2)));
+h=@(t) 1.*((t&gt;=1) &amp; (t&lt;3));
+Convolucion2(x,h)
+</pre><img vspace="5" hspace="5" src="SySPrac4AlanRosasPalacios_03.png" alt=""> <p><img vspace="5" hspace="5" src="segunda.png" alt=""> </p><p><img vspace="5" hspace="5" src="Convolucion2.gif" alt=""> </p><h2 id="18">Correlaciones</h2><h2 id="19">PR06 Problema e</h2><pre class="codeinput">xm=@(t) (1.*((t&gt;=0) &amp; (t&lt;3))-1.*((t&gt;=3) &amp; (t&lt;4)));
+h=@(t) (1.*((t&gt;=0) &amp; (t&lt;3))-1.*((t&gt;=3) &amp; (t&lt;4)));
+Correlacion(xm,h)
+</pre><img vspace="5" hspace="5" src="SySPrac4AlanRosasPalacios_04.png" alt=""> <p><img vspace="5" hspace="5" src="tercera.png" alt=""> </p><p><img vspace="5" hspace="5" src="Correlacion1.gif" alt=""> </p><h2 id="21">PR06 Problema f</h2><pre class="codeinput">xm=@(t) (1.*((t&gt;=0) &amp; (t&lt;3))-1.*((t&gt;=3) &amp; (t&lt;4)));
+h=@(t) (1.*((t&gt;=0) &amp; (t&lt;2))-1.*((t&gt;=2) &amp; (t&lt;4)));
+Correlacion2(xm,h)
+</pre><img vspace="5" hspace="5" src="SySPrac4AlanRosasPalacios_05.png" alt=""> <p><img vspace="5" hspace="5" src="cuarta.png" alt=""> </p><p><img vspace="5" hspace="5" src="Correlacion2.gif" alt=""> </p><h2 id="23">Referencias</h2><p><a href="https://es.mathworks.com/help/matlab/ref/imwrite.html#btv452g-1">https://es.mathworks.com/help/matlab/ref/imwrite.html#btv452g-1</a></p><p><a href="https://es.mathworks.com/help/matlab/ref/plot.html">https://es.mathworks.com/help/matlab/ref/plot.html</a></p><p><a href="https://es.mathworks.com/help/matlab/ref/patch.html">https://es.mathworks.com/help/matlab/ref/patch.html</a></p><p>Libro Lathi Linear systems and signals</p><p><a href="https://es.mathworks.com/help/matlab/matlab_prog/anonymous-functions.html">https://es.mathworks.com/help/matlab/matlab_prog/anonymous-functions.html</a></p><p><a href="https://disi.unal.edu.co/~lctorress/MetNum/LiMetNu2.pdf">https://disi.unal.edu.co/~lctorress/MetNum/LiMetNu2.pdf</a></p><p><a href="http://www.eumed.net/libros-gratis/2009a/488/Que%20es%20un%20metodo%20numerico.htm">http://www.eumed.net/libros-gratis/2009a/488/Que%20es%20un%20metodo%20numerico.htm</a></p><p><a href="http://148.206.53.84/tesiuami/Libros/L34.pdf">http://148.206.53.84/tesiuami/Libros/L34.pdf</a></p><p><a href="https://es.wikipedia.org/wiki/Polinomios_de_Legendre">https://es.wikipedia.org/wiki/Polinomios_de_Legendre</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% P04: Convolución y correlación
+% * Enriquez Melendez Jesus
+% * Rosas Palacios Alan
+%% Objetivos
+% * Conocer métodos básicos de integración numérica
+% * Manipulación de instrucciones en MATLAB
+% * Simular convoluciones y correlaciones de señales continuas
+%% Introducción 
+% Al momento de aplicar las Matemáticas a situaciones del mundo real nos
+% encontramos a menudo con problemas que no pueden ser resueltos
+% analíticamente o de manera exacta y cuya solución debe ser abordada con ayuda
+% de algún procedimiento numérico. 
+%
+% *¿Qué es un método numérico?*
+%
+% Un método numérico es un procedimiento mediante el cual se obtiene, casi
+% siempre de manera aproximada, la solución de ciertos problemas realizando
+% cálculos puramente aritméticos y lógicos (operaciones aritméticas
+% elementales, cálculo de funciones, consulta de una tabla de valores,
+% cálculo preposicional, etc.). Un tal procedimiento consiste de una lista
+% finita de instrucciones precisas que especifican una secuencia de
+% operaciones algebraicas y lógicas (algoritmo), que producen o bien una
+% aproximación de la solución del problema (solución numérica) o bien un
+% mensaje. La eficiencia en el cálculo de dicha aproximación depende, en
+% parte, de la facilidad de implementación del algoritmo y de las
+% características especiales y limitaciones de los instrumentos de cálculo
+% (los computadores). En general, al emplear estos instrumentos de cálculo
+% se introducen errores llamados de redondeo.             
+%
+%% Metodos numericos de integración
+% En los cursos de Cálculo Integral aprendemos a calcular una integral
+% definida de una función continua haciendo uso del Teorema Fundamental del
+% Cálculo que dice que si f(x) es una función continua en un intervalo [a,
+% b] y F(x) es una antiderivada de f(x) entonces:   
+%
+% <<a.png>>
+%
+% El problema en la práctica se presenta, cuando se nos hace imposible
+% mediante métodos analíticos determinar la antiderivada requerida, aun
+% cuando se trate de integrales aparentemente sencillas, que son imposibles de resolver con el Teorema Fundamental del Cálculo.
+% En estos casos, debemos de recurrir a la integración numérica que permite
+% obtener aproximaciones bastantes exactas.
+% 
+% *Ejemplo*
+% 
+% <<B3.PNG>>
+%
+% Podemos observar que para esta integral no existe una solución utilizando
+% el teorema fundamental del calculo, por lo que debemos ocupar metodos
+% numericos.
+%
+% Para resolver este problema podemos delimitar el area de la función con
+% un polinomio y posteriormente integrarlo para llegar a una aproximación
+% del area. En este caso usaremos un polinomio constante.
+%
+% <<AA1.PNG>>
+% 
+% De aqui se puede deducir que 
+%
+% <<AA2.PNG>>
+%
+% Comparandolo con un resultado mas aproximado de la integral
+%
+% <<AA3.PNG>>
+%
+% Podemos observar que llegamos a una conclución valida.
+%% Formulas cerradas de Newton-Cotes
+% Se utilizan para hallar un valor aproximado de integrales. 
+% La integral:
+%
+% <<d.png>>
+%
+% Donde f es una funcion derivable un numero determinado de veces, donde
+% su derivada es continua. Entonces por la teoria de Lagrange podemos
+% encontrar que la función es igual a un polinomio de grado n que va a coincidir con la función en determinados puntos mas un termino de error.   
+%
+% <<AA.PNG>>  
+%
+% <<A3.PNG>>
+%
+% En lugar de integrar f(x) integraremos el polinomio P(x) mas el factor de
+% error.
+% Para esto utilizaremos diferentes formulas de Newton-Cotes
+%
+% *Fórmula cerrada de (n+1) puntos de Newton-Cotes*
+% 
+% <<A4.PNG>>
+%
+%% Regla del trapecio (n=1)
+% Llamada asi debido a que define el areá de un trapecio, al interpolar dos
+% puntos.
+%
+% <<A5.PNG>>
+% 
+% <<A6.PNG>>
+%
+% de las formulas se puede interpretar que cuando el polinomio es de grado
+% uno, el error es cero, debido a que este depende la segunda derivada de la
+% función.
+%
+% *Ejemplo*
+% 
+% <<A7.PNG>>
+%
+% aqui podemos obserivar una aproximación al resultado de esta integral,
+% sin embargo no es muy buena.
+%% Regla de Simpson (n=2)
+% Ahora si queremos interpolar tres puntos utlizaremos la regla de Simpson
+%
+% <<A8.PNG>>
+% 
+% Donde,
+%
+% <<B1.PNG>>
+%
+% Ahora el termino de error dependera de la cuerta derivada y el valor de
+% h.
+%
+% *Ejemplo*
+%
+% <<A9.PNG>>
+%
+% <<B2.PNG>>
+%
+% Esta aproximacion con un polinomio de grado dos es un poco mejor a la de
+% grado uno debido a su cercania con el valor de la integral.
+%% Regla de tres octavos de Simpson (n=3)
+% Continuando de esta manera ahora tenemos
+%
+% <<B4.PNG>>
+%
+% Donde,
+%
+% <<B5.PNG>>
+%
+% *Ejemplo*
+%
+% <<B6.PNG>>
+% 
+% <<B7.PNG>>
+%
+% Podemos observar que este resultado da una mejor aproximacion al valor de
+% la integral, de lo cual deducimos que conforme vayamos aumentando el
+% grado del polinomio a evaluar, mejor sera la aproximación.
+%% Formulas de Newton-Cotes compuestas
+%% Regla compuesta del trapecio
+% Al realizar la regla del trapecon en diferentes intervalos resulta que,
+% los extremos solamente formaran parte de un trapecio a la vez, pero los
+% puntos intermedios formaran parte de dos trapecios.
+%
+% Por lo cual los extremos se evaluaran una vez y los puntos intermedios se
+% evaluaran dos veces.
+% 
+% <<C1.PNG>>
+%
+% Donde,
+%
+% <<C2.PNG>>
+%
+% *Ejemplo* 
+%
+% Para este ejemplo se tomaron 10 intervalos  
+%
+% <<C3.PNG>>
+%
+% Sustituyendo terminos tenemos que,
+%
+% <<C4.PNG>>
+%
+% Aqui podemos notar una mejor aproximacion para el resultado de la
+% integral
+%% Regla compuesta de Simpson
+%
+% <<C5.PNG>>
+%
+% Donde,
+%
+% <<C6.PNG>>
+%
+% *Ejemplo*
+%
+% Para este ejemplo se tomaron 10 intervalos
+%
+% <<C7.PNG>>
+%
+% Sustituyendo terminos tenemos que,
+%
+% <<D2.PNG>>
+%
+% Por lo tanto,
+%
+% <<D1.PNG>>
+% 
+% Por ultimo, podemos notar que el resultado es casi el resultado esperado
+% solo siendo diferente por decimas.
+%% Cuadratura gaussiana
+% Para este metodo se usan Polinomios de Legendre a diferencia de los
+% anteriores donde se utilizaban polinomios de Lagrange
+%
+polinomios()
+%%
+%
+% <<E3.png>>
+%
+% Tenemos
+%
+% <<D3.PNG>>
+%
+% <<D4.PNG>>
+%
+% <<E4.PNG>>
+%
+% Esta integral es valida para regiones entre -1 y 1 sin embargo si
+% queremos usar otros intervalos de integración tenemos:
+%
+% <<D5.PNG>>
+%
+% *Ejemplo*
+%
+% <<D7.PNG>>
+% 
+% Esta es otra manera de encontrar los valores de las integrales por
+% metodos numericos y podemos observar que el resultado es muy aproximado
+% al esperado.
+%% Convoluciones
+%% PR04 Problema 1
+x = @(t)((1-t).*((t>=0) & (t<1)))+((t-1).*((t>=1) & (t<2)));
+h = @(t)(1.*((t>=0) & (t<1)));
+Convolucion(x,h)
+%%
+%
+% <<primera.png>>
+%
+%
+% <<Convolucion1.gif>>
+%
+%% PR04 Problema 3
+x=@(t) (t.*((t>=0) & (t<1))+1.*((t>=1) & (t<2)));
+h=@(t) 1.*((t>=1) & (t<3));
+Convolucion2(x,h)
+%%
+%
+% <<segunda.png>>
+%
+%
+% <<Convolucion2.gif>>
+%
+%% Correlaciones
+%% PR06 Problema e
+xm=@(t) (1.*((t>=0) & (t<3))-1.*((t>=3) & (t<4)));
+h=@(t) (1.*((t>=0) & (t<3))-1.*((t>=3) & (t<4)));
+Correlacion(xm,h)
+%%
+%
+% <<tercera.png>>
+%
+%
+% <<Correlacion1.gif>>
+%
+%% PR06 Problema f
+xm=@(t) (1.*((t>=0) & (t<3))-1.*((t>=3) & (t<4)));
+h=@(t) (1.*((t>=0) & (t<2))-1.*((t>=2) & (t<4)));
+Correlacion2(xm,h)
+%%
+%
+% <<cuarta.png>>
+%
+%
+% <<Correlacion2.gif>>
+%
+%% Referencias
+% <https://es.mathworks.com/help/matlab/ref/imwrite.html#btv452g-1>
+%
+% <https://es.mathworks.com/help/matlab/ref/plot.html>
+%
+% <https://es.mathworks.com/help/matlab/ref/patch.html>
+%
+% Libro Lathi Linear systems and signals
+%
+% <https://es.mathworks.com/help/matlab/matlab_prog/anonymous-functions.html>
+%
+% <https://disi.unal.edu.co/~lctorress/MetNum/LiMetNu2.pdf>
+%
+% <http://www.eumed.net/libros-gratis/2009a/488/Que%20es%20un%20metodo%20numerico.htm>
+%
+% <http://148.206.53.84/tesiuami/Libros/L34.pdf>
+%
+% <https://es.wikipedia.org/wiki/Polinomios_de_Legendre>
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,379 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>P05: Series de Fourier en tiempo continuo</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-15"><meta name="DC.source" content="SySPrac5AlanRosasPalacios.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>P05: Series de Fourier en tiempo continuo</h1><!--introduction--><div><ul><li>Enriquez Melendez Jesus</li><li>Rosas Palacios Alan</li><li>Irvin Joshep Camacho Dominguez</li><li>Solano Castrej&oacute;n Eric</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Introduccion</a></li><li><a href="#2">Problema 1 : Ejemplo 6.1</a></li><li><a href="#4">Problema 2</a></li><li><a href="#7">Problema 3: Ejemplo 6.4</a></li><li><a href="#10">Problema 4: Ejemplo 6.5.</a></li><li><a href="#13">Problema 5: Ejemplo 6.7.</a></li><li><a href="#16">Problema 6: COMPUTER EXAMPLE C6.2</a></li><li><a href="#17">Problema 7</a></li><li><a href="#20">Concluciones</a></li><li><a href="#21">Referencias</a></li></ul></div><h2 id="1">Introduccion</h2><p>Podemos calcular Dn numericamente usando la DFT (La tranformada discreta de Fourier),que usa las muestras de una se&ntilde;al periodica x(t) durante un periodo. El intervalo de muestreo es T segundos. Por lo tanto, hay <img src="SySPrac5AlanRosasPalacios_eq15260476469833569901.png" alt="$$ N_{0}=T_{0}/T$" style="width:70px;height:15px;"> numero de muestras en un periodo <img src="SySPrac5AlanRosasPalacios_eq00938207252175140291.png" alt="$$ T_{0}$" style="width:14px;height:13px;">.  <img src="SySPrac5AlanRosasPalacios_eq07631933869533896448.png" alt="$$ D_{n}=1/T_{0}\int x(t)e^{-jnw_{0}}dt= \lim_{T\rightarrow 0} \frac{1}{N_{0}}T\sum_{k=0}^{N_{0}-1}x(kT)e^{-jnw_{0}kT}T=\lim_{T\rightarrow 0}\frac{1}{N_{0}}\sum_{k=0}^{N_{0-1}}x(kt)e^{-jn\Omega _{0}kt}$" style="width:544px;height:45px;"> Donde x(kT) es la kth muestra de x(t) y <img src="SySPrac5AlanRosasPalacios_eq04675757101410201517.png" alt="$$ N_{0}=\frac{T_{0}}{T}$" style="width:54px;height:30px;">  <img src="SySPrac5AlanRosasPalacios_eq14581530905688566232.png" alt="$$ \Omega _{0}=\omega _{0}T= \frac{2\pi}{N_{0}}$" style="width:101px;height:33px;"> En la practica, es imposible hacer qeu T---&gt;0 al calcular el lado derecho de la ecuacion. Podemos hacer que T sea peque&ntilde;o, pero no cero, lo que hara que los datos aumente sin limite. Por lo tanto, ignoraremos el limtite de T en la ecuacion con el entendimiento implicito de que T es razonablemente peque&ntilde;o. T distinto de cero dara como resultado algun error computacional, que es inevitable en cualquier evaluacion numerica de una integral. El error resultante de T distinto de cero se denomina error de alias. Por lo tanto, podemos expressar la ecuacion como <img src="SySPrac5AlanRosasPalacios_eq06154059749706256716.png" alt="$$ D_{n}=\frac{1}{N_{0}}\sum_{k=0}^{N_{0}-1}x(kT)e^{-jn\Omega _{0}k}$" style="width:172px;height:44px;"> Como <img src="SySPrac5AlanRosasPalacios_eq13025424135261247863.png" alt="$$ \Omega _{0}N_{0}=2\pi$" style="width:69px;height:14px;"> por lo tanto podemos reducir la ecuacion como <img src="SySPrac5AlanRosasPalacios_eq11670200127303348290.png" alt="$$ D_{n}+N_{0}=D_{n}$" style="width:92px;height:13px;"> La propiedad de periodicidad Dn+N0=Dn significa que mas alla de n=N0/2, los coeficientes representan los valores para n negativo. Por ejemplo, cuando N0=32,D17=D-15,D18=D-14,...,D31=D-1.El ciclo se repite nuevamente desde n=32 en adelante.</p><h2 id="2">Problema 1 : Ejemplo 6.1</h2><p><b>Trigonometrica 4 armonicos</b></p><pre class="codeinput">a0=0.504;
+b0=0;
+an=@(n) (2*0.504)/(1+16*(n^2));
+bn=@(n) (8*0.504*n)/(1+16*(n^2));
+t0=0;
+tf=pi;
+f=@(t) exp(-t/2);
+armo=4;
+a=-7;
+b=10;
+sfcT(t0,tf,an,bn,a0,b0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_01.png" alt=""> <p><b>Trigonometrica 15 armonicos</b></p><pre class="codeinput">clf;
+a0=0.504;
+b0=0;
+an=@(n) (2*0.504)/(1+16*(n^2));
+bn=@(n) (8*0.504*n)/(1+16*(n^2));
+t0=0;
+tf=pi;
+f=@(t) exp(-t/2);
+armo=15;
+a=-7;
+b=10;
+sfcT(t0,tf,an,bn,a0,b0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_02.png" alt=""> <h2 id="4">Problema 2</h2><p><b>Exponencial 4 armonicos</b></p><pre class="codeinput">clf;
+d0=0;
+dn=@(n) (12/((n*pi).^2)).*abs(sin(n*pi/2)).*exp((-pi/2)*n*1i);
+t0=-0.5;
+tf=1.5;
+f=@(t)(6.*t).*((t&gt;=-0.5)&amp;(t&lt;=0.5))+(6.*(1-t)).*((t&gt;0.5)&amp;(t&lt;=1.5));
+armo=4;
+a=-5;
+b=5;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_03.png" alt=""> <p><b>Exponencial 15 armonicos</b></p><pre class="codeinput">clf;
+d0=0;
+dn=@(n) (12/((n*pi).^2)).*abs(sin(n*pi/2)).*exp((-pi/2)*n*1i);
+t0=-0.5;
+tf=1.5;
+f=@(t)(6.*t).*((t&gt;=-0.5)&amp;(t&lt;=0.5))+(6.*(1-t)).*((t&gt;0.5)&amp;(t&lt;=1.5));
+armo=15;
+a=-5;
+b=5;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_04.png" alt=""> <h2 id="7">Problema 3: Ejemplo 6.4</h2><p><b>Exponencial 4 armonicos</b></p><pre class="codeinput">clf;
+d0=1/2;
+dn=@(n) sin(n*pi/2)./(n*pi);
+t0= -pi;
+tf= pi;
+f=@(t) (0.*(-pi&lt;=t&lt;=-pi/2 &amp; pi/2&lt;=t&lt;=pi))+(1.*(t&gt;-pi/2 &amp; t&lt;pi/2));
+armo=4;
+a=-5*pi;
+b=5*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_05.png" alt=""> <p><b>Exponencial 15 armonicos</b></p><pre class="codeinput">clf;
+d0=1/2;
+dn=@(n) sin(n*pi/2)./(n*pi);
+t0= -pi;
+tf= pi;
+f=@(t) (0.*(-pi&lt;=t&lt;=-pi/2 &amp; pi/2&lt;=t&lt;=pi))+(1.*(t&gt;-pi/2 &amp; t&lt;pi/2));
+armo=15;
+a=-5*pi;
+b=5*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_06.png" alt=""> <h2 id="10">Problema 4: Ejemplo 6.5.</h2><p><b>Exponencial 4 armonicos</b></p><pre class="codeinput">clf;
+d0=2/pi;
+dn=@(n) 2/((pi)*(1-4*n*n));
+t0=0;
+tf=pi;
+f=@(t) abs(sin(t));
+armo=4;
+a=-2*pi;
+b=3*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_07.png" alt=""> <p><b>Exponencial 15 armonicos</b></p><pre class="codeinput">clf;
+d0=2/pi;
+dn=@(n) 2/((pi)*(1-4*n*n));
+t0=0;
+tf=pi;
+f=@(t) abs(sin(t));
+armo=15;
+a=-2*pi;
+b=3*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_08.png" alt=""> <h2 id="13">Problema 5: Ejemplo 6.7.</h2><p><b>Exponencial 4 armonicos</b></p><pre class="codeinput">clf;
+d0=1/3;
+dn=@(n) 1/3;
+t0=-3/2;
+tf=3/2;
+armo=4;
+a=-5;
+b=5;
+sfc2(t0,tf,dn,d0,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_09.png" alt=""> <p><b>Exponencial 15 armonicos</b></p><pre class="codeinput">clf;
+d0 = 1/3;
+dn =@(n) 1/3;
+t0= -3/2;
+tf= 3/2;
+f2= 1;
+armo=15;
+a2=-5;
+b2=5;
+sfc2(t0,tf,dn,d0,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_10.png" alt=""> <h2 id="16">Problema 6: COMPUTER EXAMPLE C6.2</h2><p>Codigo de Lathi <b>COMPUTER EXAMPLE C6.2</b> aplicado al ejemplo 6.2 de Lathi</p><pre class="codeinput">C62()
+</pre><img vspace="5" hspace="5" src="SySPrac5AlanRosasPalacios_11.png" alt=""> <h2 id="17">Problema 7</h2><p><b>Funcion Trapecio</b></p><pre class="language-matlab"><span class="keyword">function</span> I = Trapecio(g,a,b,m)
+close <span class="string">all</span>
+h=(b-a)/m; s=0;
+<span class="keyword">for</span> i=1:m
+s=h/2*(g(a+(i-1)*h)+g(a+(i)*h))+s;
+<span class="keyword">end</span>
+I=s;
+</pre><p><b>Tabla de comparacion de valores Dn</b></p><p><img vspace="5" hspace="5" src="TablaDn.PNG" alt=""> </p><h2 id="20">Concluciones</h2><p>En el Problema numero 7 calculamos los valores de Dn por tres metodos distintos. El metodo analitico es el calculo del Dn por los metodos de integracion ya conocidos, para el calculo siguiente utilizamos el codigo COMPUTER EXAMPLE C6.4 del libro Lathi y finalmete para el metodo del trapecio usamos una funcion del metodo del trapecio compuesto para quince trapecios.</p><p>En la tabla se puede observar que los valores de Dn varian segun el metodo usando, tomando como base el metodo analitico que es el metodo que debe de empliarse para este calculo, comparamos el error entre este ultimo y los otros dos metodos, Lathi y Trapecio respectivamente, de aqui podemos observar que el error es minimo con el codigo de Lathi y para el trapecio es mayor sin embargo solo estamos utilizando 15 trapecios por lo cual entre mas trapecios usemos menor sera el error.</p><h2 id="21">Referencias</h2><p><a href="https://www.youtube.com/watch?v=zkg9kZLUCeU&amp;fbclid=IwAR3hRZliolBZ4IvmuJtByIvfzD1jmrALRszbtfh9UtBjIOfq7iHw8TqNTbg">https://www.youtube.com/watch?v=zkg9kZLUCeU&amp;fbclid=IwAR3hRZliolBZ4IvmuJtByIvfzD1jmrALRszbtfh9UtBjIOfq7iHw8TqNTbg</a></p><p>Lathi</p><p><a href="https://la.mathworks.com/help/matlab/ref/mod.html">https://la.mathworks.com/help/matlab/ref/mod.html</a></p><p><a href="https://la.mathworks.com/help/matlab/ref/xlim.html">https://la.mathworks.com/help/matlab/ref/xlim.html</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% P05: Series de Fourier en tiempo continuo
+% * Enriquez Melendez Jesus
+% * Rosas Palacios Alan
+% * Irvin Joshep Camacho Dominguez
+% * Solano Castrejón Eric
+%% Introduccion
+% Podemos calcular Dn numericamente usando la DFT (La tranformada discreta
+% de Fourier),que usa las muestras de una señal periodica x(t) durante un
+% periodo. El intervalo de muestreo es T segundos. Por lo tanto, hay 
+% $$ N_{0}=T_{0}/T$ numero de muestras en un periodo $$ T_{0}$.
+%  $$ D_{n}=1/T_{0}\int x(t)e^{-jnw_{0}}dt= \lim_{T\rightarrow 0} \frac{1}{N_{0}}T\sum_{k=0}^{N_{0}-1}x(kT)e^{-jnw_{0}kT}T=\lim_{T\rightarrow 0}\frac{1}{N_{0}}\sum_{k=0}^{N_{0-1}}x(kt)e^{-jn\Omega _{0}kt}$ 
+% Donde x(kT) es la kth muestra de x(t) y 
+% $$ N_{0}=\frac{T_{0}}{T}$  $$ \Omega _{0}=\omega _{0}T=
+% \frac{2\pi}{N_{0}}$ 
+% En la practica, es imposible hacer qeu TREPLACE_WITH_DASH_DASH->0 al calcular el lado derecho
+% de la ecuacion. Podemos hacer que T sea pequeño, pero no cero, lo que
+% hara que los datos aumente sin limite. Por lo tanto, ignoraremos el
+% limtite de T en la ecuacion con el entendimiento implicito de que T es
+% razonablemente pequeño. T distinto de cero dara como resultado algun
+% error computacional, que es inevitable en cualquier evaluacion numerica
+% de una integral. El error resultante de T distinto de cero se denomina
+% error de alias. Por lo tanto, podemos expressar la ecuacion como
+% $$ D_{n}=\frac{1}{N_{0}}\sum_{k=0}^{N_{0}-1}x(kT)e^{-jn\Omega _{0}k}$
+% Como $$ \Omega _{0}N_{0}=2\pi$ por lo tanto podemos reducir la ecuacion como $$ D_{n}+N_{0}=D_{n}$
+% La propiedad de periodicidad Dn+N0=Dn significa que mas alla de n=N0/2,
+% los coeficientes representan los valores para n negativo. Por ejemplo,
+% cuando N0=32,D17=D-15,D18=D-14,...,D31=D-1.El ciclo se repite nuevamente
+% desde n=32 en adelante.
+%% Problema 1 : Ejemplo 6.1
+% *Trigonometrica 4 armonicos*
+a0=0.504;
+b0=0;
+an=@(n) (2*0.504)/(1+16*(n^2));
+bn=@(n) (8*0.504*n)/(1+16*(n^2));
+t0=0;
+tf=pi;
+f=@(t) exp(-t/2);
+armo=4;
+a=-7;
+b=10;
+sfcT(t0,tf,an,bn,a0,b0,f,armo,a,b)
+%%
+% *Trigonometrica 15 armonicos*
+clf;
+a0=0.504;
+b0=0;
+an=@(n) (2*0.504)/(1+16*(n^2));
+bn=@(n) (8*0.504*n)/(1+16*(n^2));
+t0=0;
+tf=pi;
+f=@(t) exp(-t/2);
+armo=15;
+a=-7;
+b=10;
+sfcT(t0,tf,an,bn,a0,b0,f,armo,a,b)
+%% Problema 2
+% *Exponencial 4 armonicos*
+clf;
+d0=0;
+dn=@(n) (12/((n*pi).^2)).*abs(sin(n*pi/2)).*exp((-pi/2)*n*1i);
+t0=-0.5;
+tf=1.5;
+f=@(t)(6.*t).*((t>=-0.5)&(t<=0.5))+(6.*(1-t)).*((t>0.5)&(t<=1.5));
+armo=4;
+a=-5;
+b=5;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+%%
+% *Exponencial 15 armonicos*
+clf;
+d0=0;
+dn=@(n) (12/((n*pi).^2)).*abs(sin(n*pi/2)).*exp((-pi/2)*n*1i);
+t0=-0.5;
+tf=1.5;
+f=@(t)(6.*t).*((t>=-0.5)&(t<=0.5))+(6.*(1-t)).*((t>0.5)&(t<=1.5));
+armo=15;
+a=-5;
+b=5;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+%%
+%% Problema 3: Ejemplo 6.4
+% *Exponencial 4 armonicos*
+%%
+clf;
+d0=1/2;
+dn=@(n) sin(n*pi/2)./(n*pi);
+t0= -pi;
+tf= pi;
+f=@(t) (0.*(-pi<=t<=-pi/2 & pi/2<=t<=pi))+(1.*(t>-pi/2 & t<pi/2));
+armo=4;
+a=-5*pi;
+b=5*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+%% 
+% *Exponencial 15 armonicos*
+clf;
+d0=1/2;
+dn=@(n) sin(n*pi/2)./(n*pi);
+t0= -pi;
+tf= pi;
+f=@(t) (0.*(-pi<=t<=-pi/2 & pi/2<=t<=pi))+(1.*(t>-pi/2 & t<pi/2));
+armo=15;
+a=-5*pi;
+b=5*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+%% Problema 4: Ejemplo 6.5. 
+% *Exponencial 4 armonicos*
+%%
+clf;
+d0=2/pi;
+dn=@(n) 2/((pi)*(1-4*n*n));
+t0=0;
+tf=pi;
+f=@(t) abs(sin(t));
+armo=4;
+a=-2*pi;
+b=3*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+%%
+% *Exponencial 15 armonicos*
+clf;
+d0=2/pi;
+dn=@(n) 2/((pi)*(1-4*n*n));
+t0=0;
+tf=pi;
+f=@(t) abs(sin(t));
+armo=15;
+a=-2*pi;
+b=3*pi;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+%% Problema 5: Ejemplo 6.7. 
+% *Exponencial 4 armonicos*
+%%  
+clf;
+d0=1/3;
+dn=@(n) 1/3;
+t0=-3/2;
+tf=3/2;
+armo=4;
+a=-5;
+b=5;
+sfc2(t0,tf,dn,d0,armo,a,b)
+%% 
+% *Exponencial 15 armonicos*
+clf;
+d0 = 1/3;
+dn =@(n) 1/3;
+t0= -3/2;
+tf= 3/2;
+f2= 1;
+armo=15;
+a2=-5;
+b2=5;
+sfc2(t0,tf,dn,d0,armo,a,b)
+%% Problema 6: COMPUTER EXAMPLE C6.2
+% Codigo de Lathi *COMPUTER EXAMPLE C6.2* aplicado al ejemplo 6.2 de Lathi
+C62()
+%% Problema 7
+% *Funcion Trapecio*
+%%
+%   function I = Trapecio(g,a,b,m)
+%   close all   
+%   h=(b-a)/m; s=0;
+%   for i=1:m
+%   s=h/2*(g(a+(i-1)*h)+g(a+(i)*h))+s;
+%   end
+%   I=s;
+%%
+% *Tabla de comparacion de valores Dn*
+%
+% <<TablaDn.PNG>>
+%
+%% Concluciones
+% En el Problema numero 7 calculamos los valores de Dn por tres metodos
+% distintos. El metodo analitico es el calculo del Dn por los metodos de
+% integracion ya conocidos, para el calculo siguiente utilizamos el codigo
+% COMPUTER EXAMPLE C6.4 del libro Lathi y finalmete para el metodo del
+% trapecio usamos una funcion del metodo del trapecio compuesto para quince
+% trapecios.
+%
+% En la tabla se puede observar que los valores de Dn varian segun el
+% metodo usando, tomando como base el metodo analitico que es el metodo
+% que debe de empliarse para este calculo, comparamos el error entre este
+% ultimo y los otros dos metodos, Lathi y Trapecio
+% respectivamente, de aqui podemos observar que el error es minimo con el
+% codigo de Lathi y para el trapecio es mayor sin embargo solo estamos
+% utilizando 15 trapecios por lo cual entre mas trapecios usemos menor sera
+% el error.
+%% Referencias 
+% <https://www.youtube.com/watch?v=zkg9kZLUCeU&fbclid=IwAR3hRZliolBZ4IvmuJtByIvfzD1jmrALRszbtfh9UtBjIOfq7iHw8TqNTbg>
+%
+% Lathi
+%
+% <https://la.mathworks.com/help/matlab/ref/mod.html>
+%
+% <https://la.mathworks.com/help/matlab/ref/xlim.html>
+
+##### SOURCE END #####
+--></body></html>
